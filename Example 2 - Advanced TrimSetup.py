@@ -3,7 +3,7 @@
 
 TRIM Setup Example Using pyTRIMSetup module, by Demis D. John, Nov. 2015
 
-A Python script to generate a TRIM.IN file for running the ion-implantation simulator 
+A Python script to generate a TRIM.IN file for running the ion-implantation simulator
     TRIM.exe by James F. Zeigler (http://srim.org).
 Syntax based on CAMFR by Peter Beinstman (http://camfr.sourceforge.net)
 Nov. 2015, Demis D. John
@@ -35,12 +35,12 @@ from pyTRIMSetup import *   # import the pyTRIMSetup module
 
 ####################################################
 
-print 'Running Script...'
+print('Running Script...')
 
 '''
 Get help on available arguments etc. by typing:
     >>> help( Material )
-    >>> help( Ion )    
+    >>> help( Ion )
     >>> help( Stack )
     >>> import pyTRIMSetup as pt    # instead of importing `as *`
     >>> help( pt )
@@ -60,21 +60,21 @@ A Material object is created as so:
     Defaults for optional args: CompoundCorrect=1, IsGas=False
 '''
 GaAs = Material(['Ga','As'], [0.5,0.5],     5.320)
-AlGaAs = Material(['Al','Ga','As'], [98,02,100],   3.717)   # Mole-ratios will be normalized automatically
+AlGaAs = Material(['Al','Ga','As'], [98,2,100],   3.717)   # Mole-ratios will be normalized automatically
 AlAs = Material(['Al','As'],  [50,50],      3.752)
 
 # You can add custom elements that aren't included in AtomicInfo.py, as so:
-X = Element('X', atnum=10, mass=9.01, surface_binding=10.2, binding=22, displacement=11)
+X = Element('X', atnum=10, mass=9.01, surface_binding=10.2, lattice_binding=22, displacement=11)
 GaX = Material( [ 'Ga', X  ], [0.5,0.5], 7.26 )     # note the lack of quotes'' around X - it is an Element object!
 
 '''
 Setup Target layer Stack
 
-The Stack's Layers are created from top-to-bottom, by adding materials together, 
+The Stack's Layers are created from top-to-bottom, by adding materials together,
     while providing a thickness (Angstroms) for each layer.
     The underlying structures are python Lists, so you can group(), multiply*, and add+ Layers accordingly:
 '''
-# 35-repetitions of the layer pair: 
+# 35-repetitions of the layer pair:
 target = Stack(  AlAs(100) + 35*(  GaAs(110) + AlGaAs(150)  ) + GaAs(2500, name='Substrate')  )     # top to bottom
 # Added custom layer name to last GaAs layer.  Default name is just the compound, eg "GaAs"
 
@@ -94,7 +94,7 @@ Setup a dictionary of simulator options:
     Eventually these will have default values, but for now you need to specify all of them.
 '''
 options = {}
-options['Title'] = 'Testing the script with AlGaAs' 
+options['Title'] = 'Testing the script with AlGaAs'
 options['NumIons'] = 5000       # Max number of ions to simulate - simulator stops at this many ions
 options['AutoSaveNum'] = options['NumIons']     # Save the simulation at this interval
 options['SimType'] = 2      # Cascades: 1=No;2=Full;3=Sputt;4-5=Ions;6-7=Neutrons.  See SRIM Menu for more info.
@@ -134,7 +134,4 @@ target2 = Stack(   metal + target   )       # can add/multiply target as if it's
 target2.implant(    Ion('H', 10, 7)    )
 target2.output('ExampleOutput - with metal.in', options=options, overwrite=True)
 
-print 'done.'
-
-
-
+print('done.')
